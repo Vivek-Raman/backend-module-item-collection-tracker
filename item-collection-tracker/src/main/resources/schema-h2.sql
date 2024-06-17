@@ -1,12 +1,11 @@
--- create table if not exists external_config
--- (
---     id uuid not null default random_uuid(),
---     config_key character varying not null,
---     value character varying not null,
---     notes character varying null,
---     constraint external_config_pkey primary key (id)
--- );
---
+create table if not exists ict_operation
+(
+    id uuid not null default gen_random_uuid (),
+    type character varying not null,
+    item_code character varying not null,
+    identifier character varying not null
+);
+
 -- create unique index if not exists unique_config_key on external_config (config_key);
 --
 -- INSERT INTO external_config (config_key, value)
