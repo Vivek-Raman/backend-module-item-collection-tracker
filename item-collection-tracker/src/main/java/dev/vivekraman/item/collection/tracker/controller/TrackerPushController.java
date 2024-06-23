@@ -1,7 +1,9 @@
 package dev.vivekraman.item.collection.tracker.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.vivekraman.item.collection.tracker.config.Constants;
 import dev.vivekraman.item.collection.tracker.dto.request.OperationDTO;
+import dev.vivekraman.item.collection.tracker.dto.response.ChecklistDTO;
 import dev.vivekraman.item.collection.tracker.service.api.OperationInsertionService;
 import dev.vivekraman.monolith.annotation.MonolithController;
 import dev.vivekraman.monolith.model.Response;
@@ -19,11 +21,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TrackerPushController {
   private final OperationInsertionService operationInsertionService;
+  private final ObjectMapper objectMapper;
   private final Scheduler scheduler;
 
   @PostMapping
-  public Mono<Response<Boolean>> bulkInsert(@RequestBody List<OperationDTO> operations) {
+  public Mono<Response<ChecklistDTO>> bulkInsert(@RequestBody List<OperationDTO> operations) {
     return operationInsertionService.bulkInsert(operations)
+        .map(checklist -> {
+          ChecklistDTO response = objectMapper.convertValue(checklist, ChecklistDTO.class);
+          response.setUpdatedOn(checklist.getUpdatedOn().toDate());
+          return response;
+        })
         .map(Response::of)
         .subscribeOn(scheduler);
   }
