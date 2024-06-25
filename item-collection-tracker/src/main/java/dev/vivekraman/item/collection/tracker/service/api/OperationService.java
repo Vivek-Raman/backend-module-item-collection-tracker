@@ -6,6 +6,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-public interface OperationInsertionService {
-  Mono<Checklist> bulkInsert(List<OperationDTO> operations);
+public interface OperationService {
+  Mono<Checklist> processOperations(List<OperationDTO> operations);
 }

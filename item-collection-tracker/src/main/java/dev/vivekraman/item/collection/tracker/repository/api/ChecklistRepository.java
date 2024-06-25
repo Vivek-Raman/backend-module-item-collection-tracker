@@ -1,4 +1,4 @@
-package dev.vivekraman.item.collection.tracker.repository;
+package dev.vivekraman.item.collection.tracker.repository.api;
 
 import com.google.cloud.spring.data.firestore.FirestoreReactiveRepository;
 import dev.vivekraman.item.collection.tracker.entity.Checklist;

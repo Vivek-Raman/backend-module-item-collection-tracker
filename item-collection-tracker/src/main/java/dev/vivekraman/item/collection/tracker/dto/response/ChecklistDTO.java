@@ -1,14 +1,14 @@
 package dev.vivekraman.item.collection.tracker.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.google.cloud.Timestamp;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.vivekraman.item.collection.tracker.entity.Checklist;
 import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.SortedMap;
+import java.util.Map;
 
 @Data
 @Builder
@@ -21,8 +21,14 @@ public class ChecklistDTO implements Serializable {
   private static final long serialVersionUID = 6797350723621588547L;
 
   private String identifier;
-  private SortedMap<String, CollectionInfoDTO> collection;
-  @JsonIgnore private Date updatedOn;
+  private Map<String, CollectionInfoDTO> collection;
+  private Date lastUpdatedOn;
+
+  public static ChecklistDTO copy(ObjectMapper objectMapper, Checklist checklist) {
+    ChecklistDTO checklistDTO = objectMapper.convertValue(checklist, ChecklistDTO.class);
+    checklistDTO.setLastUpdatedOn(checklist.getUpdatedOn().toDate());
+    return checklistDTO;
+  }
 
   @Data
   @Builder

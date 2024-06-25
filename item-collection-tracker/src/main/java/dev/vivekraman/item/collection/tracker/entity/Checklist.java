@@ -8,7 +8,7 @@ import com.google.cloud.spring.data.firestore.mapping.UpdateTime;
 import lombok.*;
 
 import java.util.Date;
-import java.util.SortedMap;
+import java.util.Map;
 
 @Data
 @Builder
@@ -20,7 +20,7 @@ import java.util.SortedMap;
 public class Checklist {
   @UpdateTime(version = true) private Timestamp updatedOn;
   @DocumentId private String identifier;
-  private SortedMap<String, CollectionInfo> collection;
+  private Map<String, CollectionInfo> collection;
 
   @Data
   @Builder
