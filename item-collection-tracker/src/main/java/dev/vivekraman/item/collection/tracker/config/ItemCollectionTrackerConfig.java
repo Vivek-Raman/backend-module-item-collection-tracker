@@ -2,10 +2,12 @@ package dev.vivekraman.item.collection.tracker.config;
 
 import com.google.api.gax.core.CredentialsProvider;
 import com.google.api.gax.core.FixedCredentialsProvider;
+import com.google.api.gax.core.NoCredentialsProvider;
 import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.google.cloud.spring.data.firestore.repository.config.EnableReactiveFirestoreRepositories;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -26,7 +28,18 @@ public class ItemCollectionTrackerConfig {
         .build();
   }
 
+  @Bean("googleCredentials")
+  @ConditionalOnProperty(
+      value = "spring.cloud.gcp.firestore.emulator.enabled",
+      havingValue = "true")
+  public CredentialsProvider testGoogleCredentials() {
+    return NoCredentialsProvider.create();
+  }
+
   @Bean
+  @ConditionalOnProperty(
+      value = "spring.cloud.gcp.firestore.emulator.enabled",
+      havingValue = "false")
   public CredentialsProvider googleCredentials() throws IOException {
     return FixedCredentialsProvider.create(ServiceAccountCredentials.fromStream(
         new ByteArrayInputStream(firebaseCredentials.getBytes())));
