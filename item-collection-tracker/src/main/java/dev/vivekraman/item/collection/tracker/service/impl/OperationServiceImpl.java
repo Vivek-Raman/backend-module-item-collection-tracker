@@ -24,7 +24,7 @@ public class OperationServiceImpl implements OperationService {
         .map(checklist -> {
           operations.forEach(op -> {
             switch (op.getType()) {
-              case REGISTER -> checklist.getCollection().put(op.getItemCode(),
+              case REGISTER -> checklist.getCollection().putIfAbsent(op.getItemCode(),
                   Checklist.CollectionInfo.builder()
                       .collectedOn(op.getCollectedOn()).build());
               case UNREGISTER -> checklist.getCollection().remove(op.getItemCode());

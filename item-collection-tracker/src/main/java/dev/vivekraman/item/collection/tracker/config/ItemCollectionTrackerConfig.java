@@ -39,7 +39,7 @@ public class ItemCollectionTrackerConfig {
   @Bean
   @ConditionalOnProperty(
       value = "spring.cloud.gcp.firestore.emulator.enabled",
-      havingValue = "false")
+      havingValue = "false", matchIfMissing = true)
   public CredentialsProvider googleCredentials() throws IOException {
     return FixedCredentialsProvider.create(ServiceAccountCredentials.fromStream(
         new ByteArrayInputStream(firebaseCredentials.getBytes())));
